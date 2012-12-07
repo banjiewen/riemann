@@ -84,17 +84,17 @@
 (defn reset-tasks!
   "Resets the task queue to empty, without triggering side effects."
   []
-  (.clear tasks))
+  (.clear ^ConcurrentSkipListSet tasks))
 
 (defn poll-task!
   "Removes the next task from the queue."
   []
-  (.pollFirst tasks))
+  (.pollFirst ^ConcurrentSkipListSet tasks))
 
 (defn schedule-sneaky!
   "Schedules a task. Does *not* awaken any threads."
   [task]
-  (.add tasks task)
+  (.add ^ConcurrentSkipListSet tasks task)
   task)
 
 (defn schedule!
@@ -163,7 +163,7 @@
   []
   (locking threadpool
     (reset! running false)
-    (while (some #(.isAlive %) @threadpool)
+    (while (some #(.isAlive ^java.lang.Thread %) @threadpool)
       ; Allow at most 1/10th park-interval to pass after all threads exit.
       (Thread/sleep (* park-interval 100)))
     (reset! threadpool [])))

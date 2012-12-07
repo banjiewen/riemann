@@ -1,7 +1,7 @@
 (ns riemann.pool
   "A generic thread-safe resource pool."
   (:use clojure.tools.logging)
-  (:import [java.util.concurrent ArrayBlockingQueue TimeUnit]))
+  (:import [java.util.concurrent ArrayBlockingQueue TimeUnit BlockingQueue]))
 
 ; THIS IS A MUTABLE STATE OF AFFAIRS. WHICH IS TO SAY, IT IS FUCKING TERRIBLE.
 
@@ -21,7 +21,7 @@
   (grow [this]
         (loop []
           (if-let [thingy (try (open) (catch Throwable t nil))]
-            (.put queue thingy)
+            (.put ^BlockingQueue queue thingy)
             (do
               (Thread/sleep (* 1000 regenerate-interval))
               (recur)))))
@@ -31,13 +31,15 @@
 
   (claim [this timeout]
          (try
-           (.poll queue (* 1000 (or timeout 0)) TimeUnit/MILLISECONDS)
+           (.poll ^BlockingQueue queue
+                  (* 1000 (or timeout 0))
+                  TimeUnit/MILLISECONDS)
            (catch java.lang.InterruptedException e
              nil)))
 
   (release [this thingy]
            (when thingy
-             (.put queue thingy)))
+             (.put ^BlockingQueue queue thingy)))
 
   (invalidate [this thingy]
               (when thingy

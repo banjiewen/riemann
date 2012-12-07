@@ -37,8 +37,8 @@
       {:ok true
        :states []
        :events [(let [res {:service service
-                           :metric (Float. metric)
-                           :time (Long. timestamp)}]
+                           :metric (Float. ^String metric)
+                           :time (Long. ^String timestamp)}]
                   (if parser-fn (merge res (parser-fn res)) res))]})))
 
 (defn graphite-path-basic

@@ -35,7 +35,7 @@
     [org.slf4j/slf4j-log4j12 "1.6.4"]
     [riemann-clojure-client "0.0.6"]
     [slingshot "0.10.2"]
-  ]
+    ]
   :plugins [[codox "0.6.1"]]
   :test-selectors {:default (fn [x] (not (or (:integration x)
                                              (:time x)
@@ -48,7 +48,6 @@
                    :bench :bench
                    :focus :focus
                    :all (fn [_] true)}
-  :javac-options     ["-target" "1.6" "-source" "1.6"]
   :java-source-paths ["src/riemann/"]
   :java-source-path "src/riemann/"
   :aot [riemann.bin]

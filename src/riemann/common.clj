@@ -2,7 +2,8 @@
   "Utility functions. Time/date, some flow control constructs, protocol buffer
   definitions and codecs, some vector set ops, etc."
   (:import [java.util Date]
-           [com.aphyr.riemann Proto$Query Proto$Event Proto$Msg])
+           [com.aphyr.riemann Proto$Query Proto$Event Proto$Msg]
+           [org.jboss.netty.buffer ChannelBufferInputStream])
   (:require gloss.io
             clj-time.core
             clj-time.format
@@ -50,7 +51,7 @@
   "Decode an InputStream to a message. Decodes the protobuf representation of
   Msg and applies post-load-event to all events."
   [s]
-  (let [msg (decode-pb-msg (Proto$Msg/parseFrom s))]
+  (let [msg (decode-pb-msg (Proto$Msg/parseFrom ^ChannelBufferInputStream s))]
     (-> msg
       (assoc :states (map post-load-event (:states msg)))
       (assoc :events (map post-load-event (:events msg))))))
@@ -59,7 +60,7 @@
   "Builds and dumps a protobuf message from a hash. Applies pre-dump-event to
   events."
   [msg]
-  (.toByteArray (encode-pb-msg msg)))
+  (.toByteArray ^Proto$Msg (encode-pb-msg msg)))
 
 (defn event-to-json
   "Convert an event to a JSON string."
