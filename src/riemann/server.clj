@@ -134,7 +134,7 @@
     (getPipeline []
       (doto ^ChannelPipeline (pipeline-factory)
         (.addLast "executor" (ExecutionHandler.
-                              (OrderedMemoryAwareThreadPoolExecutor.
+                              (MemoryAwareThreadPoolExecutor.
                                16 1048576 1048576))) ; Maaagic values!
         (.addLast "handler" handler)))))
 
