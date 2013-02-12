@@ -4,7 +4,7 @@
   (:import [java.net Socket])
   (:import [java.io Writer])
   (:import [java.io OutputStreamWriter])
-  (:import [java.util.concurrent ArrayBlockingQueue])
+  (:import [java.util.concurrent LinkedBlockingQueue])
   (:use [clojure.string :only [split join replace]])
   (:use clojure.tools.logging)
   (:use riemann.common))
@@ -46,7 +46,7 @@
                      :socket-count (* 2 (.availableProcessors
                                          (Runtime/getRuntime)))
                      :path graphite-path-percentiles} opts)
-        sockets (ArrayBlockingQueue. (:socket-count opts) true)
+        sockets (LinkedBlockingQueue.)
         add-socket (fn []
                      (info (str "Opening connection to " opts))
                      (let [sock (Socket. (:host opts) (:port opts))
