@@ -136,10 +136,10 @@
                                     16 1048576 1048576)) ; Maaagic values!
                        handler  (tcp-handler core channel-group)]
                    (doto (Channels/pipeline)
+                     (.addLast "executor" executor)
                      (.addLast "int32-frame-decoder" decoder)
                      (.addLast "int32-frame-encoder" encoder)
                      (.addLast "message-decoder" (message-decoder))
-                     (.addLast "executor" executor)
                      (.addLast "handler" handler))))))
 
 (defn udp-cpf
@@ -152,8 +152,8 @@
                                   16 1048576 1048576)) ;; Moar magic!
                        handler (udp-handler core channel-group)]
                    (doto (Channels/pipeline)
-                     (.addLast "message-decoder" (message-decoder))
                      (.addLast "executor" executor)
+                     (.addLast "message-decoder" (message-decoder))
                      (.addLast "handler" handler))))))
 
 (defn tcp-server
