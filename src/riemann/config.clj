@@ -43,7 +43,7 @@
   "Add any number of streams to the default core." 
   [& things]
   (dosync
-    (alter (core :streams) concat things)))
+    (alter (core :streams) #(vec (concat %1 %2)) things)))
 
 (defn index 
   "Set the index used by this core."
