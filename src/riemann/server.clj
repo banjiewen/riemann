@@ -133,7 +133,7 @@
                        encoder  (int32-frame-encoder)
                        executor (ExecutionHandler.
                                   (OrderedMemoryAwareThreadPoolExecutor.
-                                    16 1048576 1048576)) ; Maaagic values!
+                                    36 1048576 1048576)) ; Maaagic values!
                        handler  (tcp-handler core channel-group)]
                    (doto (Channels/pipeline)
                      (.addLast "executor" executor)
@@ -149,7 +149,7 @@
     (getPipeline []
                  (let [executor (ExecutionHandler.
                                  (MemoryAwareThreadPoolExecutor.
-                                  16 1048576 1048576)) ;; Moar magic!
+                                  36 1048576 1048576)) ;; Moar magic!
                        handler (udp-handler core channel-group)]
                    (doto (Channels/pipeline)
                      (.addLast "executor" executor)
