@@ -35,7 +35,8 @@
     [org.slf4j/slf4j-log4j12 "1.6.4"]
     [riemann-clojure-client "0.2.0"]
     [slingshot "0.10.2"]
-  ]
+    ]
+  :warn-on-reflection true
   :plugins [[codox "0.6.1"]
             [lein-rpm "0.0.5"]]
   :test-selectors {:default (fn [x] (not (or (:integration x)
